@@ -1,0 +1,91 @@
+Start testing: Apr 22 15:37 BST
+----------------------------------------------------------
+1/5 Testing: ShortLFSR
+1/5 Test: ShortLFSR
+Command: "/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/bin/testShortLFSR"
+Directory: /home/chris/crypto/Cryptographic-C---Toolkit/LFSR
+"ShortLFSR" start time: Apr 22 15:37 BST
+Output:
+----------------------------------------------------------
+1011110001001101
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ShortLFSR" end time: Apr 22 15:37 BST
+"ShortLFSR" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: LongLFSR
+2/5 Test: LongLFSR
+Command: "/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/bin/testLFSR"
+Directory: /home/chris/crypto/Cryptographic-C---Toolkit/LFSR
+"LongLFSR" start time: Apr 22 15:37 BST
+Output:
+----------------------------------------------------------
+1010001001100011010110010011011000100010100000110101001010101111111111000001011101010000110000000100
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"LongLFSR" end time: Apr 22 15:37 BST
+"LongLFSR" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: EqualReductedLFSR
+3/5 Test: EqualReductedLFSR
+Command: "/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/bin/testReductionEquality"
+Directory: /home/chris/crypto/Cryptographic-C---Toolkit/LFSR
+"EqualReductedLFSR" start time: Apr 22 15:37 BST
+Output:
+----------------------------------------------------------
+0110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110
+0110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110110
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"EqualReductedLFSR" end time: Apr 22 15:37 BST
+"EqualReductedLFSR" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: BerlekampMassey
+4/5 Test: BerlekampMassey
+Command: "/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/bin/testBerlekampMassey"
+Directory: /home/chris/crypto/Cryptographic-C---Toolkit/LFSR
+"BerlekampMassey" start time: Apr 22 15:37 BST
+Output:
+----------------------------------------------------------
+Testing: 32 3925868545 32
+Res: 1000000000000000000000000000000011001000101101011111100110111010111100001011001010100111010111000011[32]
+Testing: 32 3221226497 32
+Res: 1000000000000000000000000000000011011011011011011011010001010001111001111001000010011001000010010101[32]
+Testing: 3 3 3
+Res: 1001011100101110010111001011100101110010111001011100101110010111001011100101110010111001011100101110[3]
+Testing: 4 3 4
+Res: 1000100110101111000100110101111000100110101111000100110101111000100110101111000100110101111000100110[4]
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BerlekampMassey" end time: Apr 22 15:37 BST
+"BerlekampMassey" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: ASyncShort
+5/5 Test: ASyncShort
+Command: "/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/bin/testASyncShort"
+Directory: /home/chris/crypto/Cryptographic-C---Toolkit/LFSR
+"ASyncShort" start time: Apr 22 15:37 BST
+Output:
+----------------------------------------------------------
+0011010111100010011010111100010011010111100010011010111100010011010111100010011010111100010011010111
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ASyncShort" end time: Apr 22 15:37 BST
+"ASyncShort" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 22 15:37 BST

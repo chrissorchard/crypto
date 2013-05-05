@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+#binaries
+final1.pdf
+alpha
+chewlfsr
+

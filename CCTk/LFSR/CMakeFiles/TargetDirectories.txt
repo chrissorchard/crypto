@@ -1,0 +1,7 @@
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/BerlekampMassey.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testASyncShort.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testBerlekampMassey.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testLFSR.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testMSeq.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testReductionEquality.dir
+/home/chris/crypto/Cryptographic-C---Toolkit/LFSR/CMakeFiles/testShortLFSR.dir

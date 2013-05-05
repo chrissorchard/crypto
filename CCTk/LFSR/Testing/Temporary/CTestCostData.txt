@@ -1,0 +1,6 @@
+ShortLFSR 1 0.00342488
+LongLFSR 1 0.00267792
+EqualReductedLFSR 1 0.00237179
+BerlekampMassey 1 0.00269818
+ASyncShort 1 0.00242209
+---
