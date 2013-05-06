@@ -145,7 +145,7 @@ monoalphabetic substitution cipher. As in question one, the substitution helper
 was used to solve the cipher.
 Firstly the top 8 frequencies were swapped, and then the rest of the cipher was
 completed by manual analysis. However, the letter frequencies for this cipher
-are not those of English, as the cipher text contains multiple single capital
+do not match not those of English, as the cipher text contains multiple single capital
 Rs which the frequency table shows should be substituted to T, but in English
 can only correspond to the letter I. Eventually the plaintext was derived
 primarily by solving the 2-3 letter words until the correct substitution for T
@@ -162,7 +162,38 @@ cipher as implemented for the Latin alphabet:
 ./alpha z y x w v u t s r q p o n m l k j i h g f e d c b a
 \end{verbatim}
 
-\section{Q4}
+\section{Q4: Hacking the Mifare Classic}
 
+\subsection{An Introduction to Mifare}
+
+Mifare is a brand of RFID tag produced by NXP Semiconductor (formerly Philips)
+aimed at low cost smartcards that can be easily distributed and used for
+ingress/egress control and public transport systems. The Mifare Classic is the
+simplest and until recently most widely used of the Mifare family(cite),
+implementing a subset of the ISO/IEC 14443 Type A standard for contactless smart
+cards, and a proprietary security protocol designed by NXP for which the details
+are not published.
+
+Between 2007 and 2009, a number of researchers reverse engineered the security
+protocol and encryption method used in the Mifare Classic system, and found a
+number of serious security vulnerabilities which the researchers used to
+completely compromise the security of the cards. It was not only shown to be
+possible to retrieve the data from the cards without the required key, but
+possible to recover the key itself, and hence break the encryption. The attacks
+demonstrated are possible with minimal computing resources, and can be performed
+in sub-second times on a laptop in the case of the fastest attack. Researchers
+successfully used the attacks on the Mifare Classic system to gain unauthorised
+access to access controlled buildings by cloning
+cards\cite{digitalsecurityrun_mifare_2008}.
+
+\subsection{The CRYPTO-1 Cipher}
+
+\subsection{Breaking the Cipher}
+
+\subsection{Conclusions}
+
+\bibliographystyle{IEEEtran}
+%\bibliography{irp-report,rfc,i-d}{}
+\bibliography{crypto}{}
 
 \end{document}
