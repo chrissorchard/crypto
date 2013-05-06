@@ -188,6 +188,46 @@ cards\cite{digitalsecurityrun_mifare_2008}.
 
 \subsection{The CRYPTO-1 Cipher}
 
+The encryption system used by Mifare Classic is known as CRYPTO-1. The only
+details published by NXP about CRYPTO-1 is that it is a stream cipher with a
+48 bit key. Nohl \& Plotz reverse engineered the system by analysing the
+hardware of the Mifare Classic, using a microscope to take pictures of the
+each layer of the silicon, polishing away each layer to reveal the next
+\cite{nohl_reverse-engineering_????}. The
+structure of the cipher was revealed using software to perform template
+detection to detect individual gates, and then manual reconstructing the circuit
+wiring. The cipher was revealed to be based on a 48 bit LFSR with the
+characteristic function:
+
+%TODO: insert characteristic function
+
+This is a primitive polynomial, so the LFSR has the maximum state space of
+(insert maths here). By analysing the protocol, it is also possible to derive
+the structure of the random number generator used to generate the Nonce used by
+the card in the authentication handshake. This is another LFSR, of 16 bits with
+the characteristic function (some maths). The LFSR is linked to the clock, and
+cycles through the state space every 0.6 seconds, and is reset to the 0 state on
+power-on, a critical failure in the cryptographic design that allows for trivial
+timing attacks on the cipher.
+
+It is possible to reveal more details of the CRYPTO-1 cipher by further
+analysing the protocol. Garcia et al. manipulate the nonce and uid with a
+hardware emulation of a Mifare Classic card, and find that the initial state of
+the 48 bit LFSR is set to the secret key of the cardi\cite{garcia_dismantling_2008}.
+Using a similar method it
+is possible to derive the function used to modify the output of the LFSR and
+actually form the keystream. This was achieved by working out how to predict
+then manipulate the output of the LFSR, revealing the function shown in Figure
+\ref{fig:crypto1}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\textwidth]{img/crypto1.png}
+\caption{CRYPTO-1 Cipher Description (reprinted from
+\protect\cite{garcia_dismantling_2008})}
+\label{fig:crypto1}
+\end{figure}
+
 \subsection{Breaking the Cipher}
 
 \subsection{Conclusions}
