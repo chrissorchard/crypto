@@ -9,7 +9,8 @@
 #include <map>
 using namespace std;
 
-#define CT_FILE "awesome.bin"
+//#define CT_FILE "awesome.bin"
+#define CT_FILE "q3"
 
 
 int main(int argc, char *argv[]) {

@@ -116,6 +116,52 @@ obvious that the second stage encryption is in fact ROT-13.
 
 \section{Q2}
 \section{Q3}
+
+This cipher takes form of a string of alphabetic characters with capitalisation
+and some punctuation included. To start the process of decrypting the text, frequency
+analysis was performed using the tool hosted at(cite). The top 8 results of
+analysis are shown below.
+
+\begin{center}
+%\begin{tabularx}{0.8\textwidth}{cc|cc}
+\begin{tabular}{cc|cc}
+    \multicolumn{2}{c|}{English} & \multicolumn{2}{c}{Ciphertext} \\
+    \hline
+    Letter & Frequency(\%) & Letter & Frequency(\%) \\
+    \hline
+    E                & 12.7         & V      & 13.8  \\
+    T                & 9.1          & R      & 9.2   \\
+    A                & 8.2          & G      & 8.0   \\
+    O                & 7.5          & L      & 7.6   \\
+    I                & 7.0          & M      & 7.5   \\
+    N                & 6.7          & H      & 6.3   \\
+    S                & 6.3          & Z      & 6.3   \\
+    H                & 6.1          & I      & 5.9   \\
+\end{tabular}
+\end{center}
+
+The frequencies appear to match what would be expected for a simple
+monoalphabetic substitution cipher. As in question one, the substitution helper
+was used to solve the cipher.
+Firstly the top 8 frequencies were swapped, and then the rest of the cipher was
+completed by manual analysis. However, the letter frequencies for this cipher
+are not those of English, as the cipher text contains multiple single capital
+Rs which the frequency table shows should be substituted to T, but in English
+can only correspond to the letter I. Eventually the plaintext was derived
+primarily by solving the 2-3 letter words until the correct substitution for T
+was found. The plaintext is as follows:
+
+\begin{quote}
+    \input{q3plain.tex}
+\end{quote}    
+
+The cipher for the text is as follows, and can be recognised as the Atbash
+cipher as implemented for the Latin alphabet:
+
+\begin{verbatim}
+./alpha z y x w v u t s r q p o n m l k j i h g f e d c b a
+\end{verbatim}
+
 \section{Q4}
 
 
