@@ -1,7 +1,15 @@
 \documentclass[pdflatex, a4paper,12pt]{article}
 %\documentclass[a4paper,10pt]{scrartcl}
 
+%some packages, mostly from malucrawl report
+\usepackage[pdftex]{graphicx}
 \usepackage[utf8x]{inputenc}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{nomencl}
+\usepackage{verbatim}
+\usepackage{tabularx}
 
 \providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
@@ -12,7 +20,101 @@
 Author: Chris Orchard\\
 \end{center}
 
+TODO: an amount of intro?
+
 \section{Q1}
+
+Before attempting to decrypt the cipher, it was first necessary to transcribe
+the hexadecimal string that formed the ciphertext into a format that was machine
+readable. This was done by hand by copying the string into a binary hexadecimal
+editor, and then comparing the two texts to ensure accuracy. In the process of
+transcribing the ciphertext, it became obvious that there was a pattern in the
+ciphertext aligned to to the byte boundaries and more likely aligned to a
+multiple of four bytes, as there is a clearly visible pattern of similar bytes
+in the columns of the cipher text, with the with in the provided image 28
+characters. Upon performing autocorrelation of the ciphertext it was evident
+that a likely key length was 32 bits, which correlates with the previous
+observations. This however is one bit longer than the period of a degree 5 LFSR,
+which the hint describes as the basis for the outer layer of encryption.
+
+To break the LFSR cipher, a cracker was built using a C++ cryptographic library
+\footnote[1]{https://github.com/mvy/Cryptographic-C---Toolkit}, that iterated
+through all possible states and characteristic functions of an LFSR and tried to
+match the output to the given first two characters \verb+Ur+. This program
+(included with this report as lfsr.cpp) successfully found an LFSR that provided
+the appropriate plaintext, and the text derived is as follows:
+
+\begin{quote}
+\verbatiminput{fourth.tex}
+\end{quote}
+
+This does not look like the output of a possible alphanumeric cipher and in
+fact it appears that every fourth character is incorrect, or at least is not an
+alphanumeric character. It appears that an incorrect assumption has been made
+about the key, that the key consists of 31 bits of LFSR output followed by a
+single bit. Given the structure of ASCII it cannot be the case that the last bit
+is incorrect, otherwise the output would look convincingly like alphanumeric text. 
+
+Continuing to run with the assumption that all 31 bits of the LFSR are being
+used, the next step is to find out where the last bit is placed. As the
+implementation in \verb+lfsr.cpp+ computes the LFSR keystream on a byte by byte
+basis, the first obvious place to try would be at the other end of the byte
+meaning that the keystream would consist of 24 bits of LFSR, one arbitrary bit
+(that is set to 0 in this case), followed by the last 7 bits of LFSR stream. The
+output of this configuration is as follows:
+
+\begin{quote}
+\verbatiminput{decrypt.tex}
+\end{quote}
+
+The output of this stage now looks much more like the output of an alphanumeric
+cipher. The next stage in decrypting the ciphertext is to apply frequency
+analysis. Table (cite) shows the top 8 frequencies of letters in the English
+language beside the top 8 frequencies in the ciphertext, derived from tools at
+(cite).
+\begin{center}
+%\begin{tabularx}{0.8\textwidth}{cc|cc}
+\begin{tabular}{cc|cc}
+    \multicolumn{2}{c|}{English} & \multicolumn{2}{c}{Ciphertext} \\
+    \hline
+    Letter & Frequency(\%) & Letter & Frequency(\%) \\
+    \hline
+    E                & 12.7         & R      & 14.9  \\
+    T                & 9.1          & G      & 8.6   \\
+    A                & 8.2          & B      & 8.1   \\
+    O                & 7.5          & F      & 7.0   \\
+    I                & 7.0          & N      & 7.0   \\
+    N                & 6.7          & V      & 6.6   \\
+    S                & 6.3          & U      & 6.6   \\
+    H                & 6.1          & A      & 6.4   \\
+\end{tabular}
+\end{center}
+
+The frequencies indicate that the second stage cipher is probably a
+monoalphabetic substitution cipher. To decrypt the cipher a second tool was
+written in C++ \verb+monosubs.ccp+ that takes the substitution alphabet as
+arguments and then displays the ciphertext and the plaintext. After replacing
+the top 8 frequency characters in table (cite), it was then possible to do the
+rest of the decryption by hand, resulting in the following output:
+
+%\begin{minipage}{3in}
+\begin{quote}
+    \verbatiminput{cipherplain.tex}
+\end{quote}
+%\end{minipage}
+
+The final substitution alphabet is as follows, shown as the arguments to the
+substitution helper:
+
+\begin{quote}
+    \begin{verbatim}
+./alpha ...
+    \end{verbatim}
+\end{quote}
+
+By rearranging the unused characters to a more familiar order, it becomes
+obvious that the second stage encryption is in fact ROT-13.
+
 \section{Q2}
 \section{Q3}
 \section{Q4}
