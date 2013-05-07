@@ -21,8 +21,6 @@
 Author: Chris Orchard\\
 \end{center}
 
-TODO: an amount of intro?
-
 \section{Q1}
 
 Before attempting to decrypt the cipher, it was first necessary to transcribe
@@ -70,9 +68,9 @@ output of this configuration is as follows:
 
 The output of this stage now looks much more like the output of an alphanumeric
 cipher. The next stage in decrypting the ciphertext is to apply frequency
-analysis. Table (cite) shows the top 8 frequencies of letters in the English
+analysis. The table below shows the top 8 frequencies of letters in the English
 language beside the top 8 frequencies in the ciphertext, derived from tools at
-(cite).
+\cite{_monoalphabetic_????}.
 \begin{center}
 %\begin{tabularx}{0.8\textwidth}{cc|cc}
 \begin{tabular}{cc|cc}
@@ -95,7 +93,7 @@ The frequencies indicate that the second stage cipher is probably a
 monoalphabetic substitution cipher. To decrypt the cipher a second tool was
 written in C++ \verb+monosubs.ccp+ that takes the substitution alphabet as
 arguments and then displays the ciphertext and the plaintext. After replacing
-the top 8 frequency characters in table (cite), it was then possible to do the
+the top 8 frequency characters in the table below, it was then possible to do the
 rest of the decryption by hand, resulting in the following output:
 
 %\begin{minipage}{3in}
@@ -132,9 +130,12 @@ f5(x) & = X^6 + X + 1
 \begin{description}
     \item[f1(x)] Is not a primitive polynomial. 
     \item[f2(x)] Is not a primitive polynomial.
-    \item[f3(x)] Is not a primitive polynomial.
+    \item[f3(x)] Is not a primitive polynomial as it factorises to $X(X^5 + X^4
+        + 1)$.
     \item[f4(x)] Is not a primitive polynomial.
-    \item[f5(x)] Is a primitive polynomial, as indicated by(cite).
+    \item[f5(x)] Is a primitive polynomial, as indicated
+        by\cite{hansen_primitive_1992}, so can be a generator polynomial for a
+        Hamming code.
 \end{description}
 
 \subsection{Q2b}
@@ -148,7 +149,7 @@ f5(x) & = X^6 + X + 1
 
 This cipher takes form of a string of alphabetic characters with capitalisation
 and some punctuation included. To start the process of decrypting the text, frequency
-analysis was performed using the tool hosted at(cite). The top 8 results of
+analysis was performed using the tool hosted at\cite{_monoalphabetic_????}. The top 8 results of
 analysis are shown below.
 
 \begin{center}
@@ -198,7 +199,8 @@ cipher as implemented for the Latin alphabet:
 Mifare is a brand of RFID tag produced by NXP Semiconductor (formerly Philips)
 aimed at low cost smartcards that can be easily distributed and used for
 ingress/egress control and public transport systems. The Mifare Classic is the
-simplest and until recently most widely used of the Mifare family(cite),
+simplest and until recently most widely used of the Mifare
+family\cite{mayes_transport_2009},
 implementing a subset of the ISO/IEC 14443 Type A standard for contactless smart
 cards, and a proprietary security protocol designed by NXP for which the details
 are not published.
@@ -228,21 +230,27 @@ detection to detect individual gates, and then manual reconstructing the circuit
 wiring. The cipher was revealed to be based on a 48 bit LFSR with the
 characteristic function:
 
-%TODO: insert characteristic function
+%\begin{equation}
+\begin{multline*}
+    g(x) = x^{48} + x^{43} + x^{38} + x^{36} + x^{34} + x^{33} + x^{31} + x^{29}
+    + x^{24} + x^{23} + x^{21} + x^{19} + x^{13}\\
+    + x^9 + x^7 + x^6 + x^5 + 1
+\end{multline*}
+%\end{equation}
 
 This is a primitive polynomial, so the LFSR has the maximum state space of
-(insert maths here). By analysing the protocol, it is also possible to derive
-the structure of the random number generator used to generate the Nonce used by
+$2^{48} - 1$. By analysing the protocol, it is also possible to derive
+the structure of the random number generator used to generate the nonce used by
 the card in the authentication handshake. This is another LFSR, of 16 bits with
-the characteristic function (some maths). The LFSR is linked to the clock, and
+the characteristic function $g(x) = x^{16} + x^{13} + x^{11} + 1$. The LFSR is linked to the clock, and
 cycles through the state space every 0.6 seconds, and is reset to the 0 state on
 power-on, a critical failure in the cryptographic design that allows for trivial
 timing attacks on the cipher.
 
 It is possible to reveal more details of the CRYPTO1 cipher by further
-analysing the protocol. Garcia et al. manipulate the nonce and uid with a
+analysing the protocol. Garcia et al. manipulate the nonce and UID with a
 hardware emulation of a Mifare Classic card, and find that the initial state of
-the 48 bit LFSR is set to the secret key of the cardi\cite{garcia_dismantling_2008}.
+the 48 bit LFSR is set to the secret key of the card\cite{garcia_dismantling_2008}.
 Using a similar method it
 is possible to derive the output function used to modify the output of the LFSR and
 actually form the keystream. This was achieved by working out how to predict
@@ -268,9 +276,9 @@ plaintext by capturing a successful transaction between a genuine card and
 reader, and then using the timing attacks to generate a predictable nonce and
 replay the captured data\cite{gans_practical_2008}. Because the request
 specifying which block of data to
-access is send in plaintext, it is possible to request known blocks and hence
+access is sent in plaintext, it is possible to request known blocks and hence
 recover the keystream. This allows data to be read (and write if a write
-transaction is captured) from the secured storage without needing to posses the
+transaction is captured) from the secured storage without needing to possess the
 secret key, although it might not be necessarily possible to retrieve all data.
 
 Garcia et al. make considerably further progress using their Ghost device,
@@ -278,7 +286,7 @@ custom hardware that trivialises manipulating the nonce and UID sent by the card
 by emulating a card, or manipulating the reader nonce by emulating a reader. Two
 attacks on the cipher are specified. The first manipulates the UID and nonce
 sent by the tag to reduce the search space for an LFSR state capable of
-producing a given key space to 2**36 rather than 2**48. A table mapping all of
+producing a given key space to $2^{36}$ rather than $2^{48}$. A table mapping all of
 these possible LFSR states to produced keystreams must be produced, that is
 approximately 1TB in size (although can be reused). 64 bits of keystream
 recoverable from a failed authentication can then be used to recover the LFSR
@@ -289,7 +297,7 @@ requires 2-14 minutes with a genuine reader. The second method is much more
 advanced, but considerably quicker to execute. The output function of the cipher
 is based solely on the odd outputs of the LFSR from 9-47, a pattern simple
 enough to allow the search space of LFSR states to keystream to be split into
-two 2**19 tables. Using this approach it is possible to use the inverse of the output
+two $2^{19}$ tables. Using this approach it is possible to use the inverse of the output
 function to derive the LFSR state from 32/64 bits of keystream in less than a
 second, which can then be rolled back to recover the secret key. Only one
 authentication attempt is required for this attack, no prior preparation of
@@ -319,9 +327,9 @@ The Mifare Classic system is still in use at the University Of Southampton for
 access control and public transport, and if a Ghost-like device were to be
 re-created it would be trivial to clone cards for access, or modify cards for
 access to transport. The Mifare Classic system was previously also used for the
-Oyster contactless system run by Transport for London but has been replaced
-with a more secure version, primarily because of the security concerns
-highlighted above.
+Oyster contactless system run by Transport for London but has since been replaced
+with a more secure version, primarily because of the security concerns caused by
+the breaking of the cipher.
 
 \bibliographystyle{IEEEtran}
 %\bibliography{irp-report,rfc,i-d}{}
