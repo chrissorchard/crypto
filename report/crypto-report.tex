@@ -10,6 +10,7 @@
 \usepackage{nomencl}
 \usepackage{verbatim}
 \usepackage{tabularx}
+\usepackage{amsmath}
 
 \providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
@@ -116,7 +117,32 @@ obvious that the second stage encryption is in fact ROT-13.
 
 \section{Q2}
 
-TODO: this bit
+\subsection{Q2a}
+
+Generator polynomials for Hamming codes must be primitive, as this ensures that
+the Hamming distance of the generated cyclic code will be at least 3. 
+\begin{align*}
+f1(x) & = X^6 + X^3 + X^2 + X + 1\\
+f2(x) & = X^6 + X^5 + X^4 + X^3 + 1\\
+f3(x) & = X^6 + X^5 + X\\
+f4(x) & = X^6 + X^5 + X^4 + X^3 + X^2 + X + 1\\
+f5(x) & = X^6 + X + 1
+\end{align*}
+
+\begin{description}
+    \item[f1(x)] Is not a primitive polynomial. 
+    \item[f2(x)] Is not a primitive polynomial.
+    \item[f3(x)] Is not a primitive polynomial.
+    \item[f4(x)] Is not a primitive polynomial.
+    \item[f5(x)] Is a primitive polynomial, as indicated by(cite).
+\end{description}
+
+\subsection{Q2b}
+
+
+
+\subsection{Q2c}
+
 
 \section{Q3}
 
