@@ -108,7 +108,7 @@ substitution helper:
 
 %\begin{quote}
 \begin{verbatim}
-./alpha n o p d r s t u v w k y m a b c d e f g h i w k l m
+./alpha n o p z r s t u v w q y j a b c d e f g h i x k l m
 \end{verbatim}
 %\end{quote}
 By rearranging the unused characters to a more familiar order, it becomes
@@ -252,7 +252,7 @@ custom hardware that trivialises manipulating the nonce and UID sent by the card
 by emulating a card, or manipulating the reader nonce by emulating a reader. Two
 attacks on the cipher are specified. The first manipulates the UID and nonce
 sent by the tag to reduce the search space for an LFSR state capable of
-producing a given key space to 2\^36 rather than 2\^48. A table mapping all of
+producing a given key space to 2**36 rather than 2**48. A table mapping all of
 these possible LFSR states to produced keystreams must be produced, that is
 approximately 1TB in size (although can be reused). 64 bits of keystream
 recoverable from a failed authentication can then be used to recover the LFSR
@@ -273,6 +273,29 @@ decrypted by the first key. The tag nonce for the next sector is encrypted, but
 can be guessed by exploiting the re-use of the key-stream for parity bits. 
 
 \subsection{Conclusions}
+
+The cryptographic system used in Mifare Classic RFID cards, CRYPTO1 is very
+weak with a number of serious design flaws allowing the entire cryptographic
+system to be broken with little hardware in a trivial amount of time. Many of
+these design issues could have been possibly avoided if NXP had shared the specification of
+CRYPTO1 at any point, so it could be rigorously tested by the community before
+it reached widespread use. Instead Mifare Classic relies on security through
+obscurity, an approach that did not work, in part thanks to the simplicity of
+CRYPTO1. This simplicity can be in part be put down to the compromise made by
+the designers of Mifare Classic between the security of the system and the
+requirement that it should draw sufficiently small amounts of power to be
+powered by induction from the reader. The large feature size and lack of
+anti-tampering measures that allowed the
+physical structure to be analysed could also be related to compromising to
+reduce the cost of the cards.
+
+The Mifare Classic system is still in use at the University Of Southampton for
+access control and public transport, and if a Ghost-like device were to be
+re-created it would be trivial to clone cards for access, or modify cards for
+access to transport. The Mifare Classic system was previously also used for the
+Oyster contactless system run by Transport for London but has been replaced
+with a more secure version, primarily because of the security concerns
+highlighted above.
 
 \bibliographystyle{IEEEtran}
 %\bibliography{irp-report,rfc,i-d}{}
