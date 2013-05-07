@@ -38,7 +38,7 @@ observations. This however is one bit longer than the period of a degree 5 LFSR,
 which the hint describes as the basis for the outer layer of encryption.
 
 To break the LFSR cipher, a cracker was built using a C++ cryptographic library
-\footnote[1]{https://github.com/mvy/Cryptographic-C---Toolkit}, that iterated
+\cite{_cryptographic-c---toolkit_????}, that iterated
 through all possible states and characteristic functions of an LFSR and tried to
 match the output to the given first two characters \verb+Ur+. This program
 (included with this report as lfsr.cpp) successfully found an LFSR that provided
@@ -115,6 +115,9 @@ By rearranging the unused characters to a more familiar order, it becomes
 obvious that the second stage encryption is in fact ROT-13.
 
 \section{Q2}
+
+TODO: this bit
+
 \section{Q3}
 
 This cipher takes form of a string of alphabetic characters with capitalisation
@@ -182,14 +185,14 @@ possible to retrieve the data from the cards without the required key, but
 possible to recover the key itself, and hence break the encryption. The attacks
 demonstrated are possible with minimal computing resources, and can be performed
 in sub-second times on a laptop in the case of the fastest attack. Researchers
-successfully used the attacks on the Mifare Classic system to gain unauthorised
+have successfully used the attacks on the Mifare Classic system to gain unauthorised
 access to access controlled buildings by cloning
 cards\cite{digitalsecurityrun_mifare_2008}.
 
-\subsection{The CRYPTO-1 Cipher}
+\subsection{The CRYPTO1 Cipher}
 
-The encryption system used by Mifare Classic is known as CRYPTO-1. The only
-details published by NXP about CRYPTO-1 is that it is a stream cipher with a
+The encryption system used by Mifare Classic is known as CRYPTO1. The only
+details published by NXP about CRYPTO1 is that it is a stream cipher with a
 48 bit key. Nohl \& Plotz reverse engineered the system by analysing the
 hardware of the Mifare Classic, using a microscope to take pictures of the
 each layer of the silicon, polishing away each layer to reveal the next
@@ -210,12 +213,12 @@ cycles through the state space every 0.6 seconds, and is reset to the 0 state on
 power-on, a critical failure in the cryptographic design that allows for trivial
 timing attacks on the cipher.
 
-It is possible to reveal more details of the CRYPTO-1 cipher by further
+It is possible to reveal more details of the CRYPTO1 cipher by further
 analysing the protocol. Garcia et al. manipulate the nonce and uid with a
 hardware emulation of a Mifare Classic card, and find that the initial state of
 the 48 bit LFSR is set to the secret key of the cardi\cite{garcia_dismantling_2008}.
 Using a similar method it
-is possible to derive the function used to modify the output of the LFSR and
+is possible to derive the output function used to modify the output of the LFSR and
 actually form the keystream. This was achieved by working out how to predict
 then manipulate the output of the LFSR, revealing the function shown in Figure
 \ref{fig:crypto1}.
@@ -223,12 +226,51 @@ then manipulate the output of the LFSR, revealing the function shown in Figure
 \begin{figure}[htb]
 \centering
 \includegraphics[width=\textwidth]{img/crypto1.png}
-\caption{CRYPTO-1 Cipher Description (reprinted from
+\caption{CRYPTO1 Cipher Description (reprinted from
 \protect\cite{garcia_dismantling_2008})}
 \label{fig:crypto1}
 \end{figure}
 
 \subsection{Breaking the Cipher}
+
+The CRYPTO1 cipher can be broken in a number of ways, varying in complexity and
+time and resources needed. Nohl \& Plotz identify that it is possible to brute
+force the 48 bit key space, or generate rainbow tables for all possible secret
+keys, that possibly can be used with timing manipulation to recover plaintext.
+De Koning Gans et al. further this research by recovering keystream and hence
+plaintext by capturing a successful transaction between a genuine card and
+reader, and then using the timing attacks to generate a predictable nonce and
+replay the captured data\cite{gans_practical_2008}. Because the request
+specifying which block of data to
+access is send in plaintext, it is possible to request known blocks and hence
+recover the keystream. This allows data to be read (and write if a write
+transaction is captured) from the secured storage without needing to posses the
+secret key, although it might not be necessarily possible to retrieve all data.
+
+Garcia et al. make considerably further progress using their Ghost device,
+custom hardware that trivialises manipulating the nonce and UID sent by the card
+by emulating a card, or manipulating the reader nonce by emulating a reader. Two
+attacks on the cipher are specified. The first manipulates the UID and nonce
+sent by the tag to reduce the search space for an LFSR state capable of
+producing a given key space to 2\^36 rather than 2\^48. A table mapping all of
+these possible LFSR states to produced keystreams must be produced, that is
+approximately 1TB in size (although can be reused). 64 bits of keystream
+recoverable from a failed authentication can then be used to recover the LFSR
+state for that keystream. It is then possible to ``roll back'' the LFSR state to
+find the secret key as the last bit of the LFSR is not used by the output
+function. This method requires 4096 real authentication attempts to work, so
+requires 2-14 minutes with a genuine reader. The second method is much more
+advanced, but considerably quicker to execute. The output function of the cipher
+is based solely on the odd outputs of the LFSR from 9-47, a pattern simple
+enough to allow the search space of LFSR states to keystream to be split into
+two 2**19 tables. Using this approach it is possible to use the inverse of the output
+function to derive the LFSR state from 32/64 bits of keystream in less than a
+second, which can then be rolled back to recover the secret key. Only one
+authentication attempt is required for this attack, no prior preparation of
+tables is required. This method of breaking the cipher is also effective for
+recovering keys for other sectors, as the authentication request can be
+decrypted by the first key. The tag nonce for the next sector is encrypted, but
+can be guessed by exploiting the re-use of the key-stream for parity bits. 
 
 \subsection{Conclusions}
 
